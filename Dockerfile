@@ -1,18 +1,29 @@
-FROM nginx:alpine
+FROM nginx:1.25.3-alpine
 
 LABEL maintainer="TP DevOps"
-LABEL description="Application DevOps containerisée avec Nginx"
+LABEL description="Application DevOps sécurisée"
+LABEL org.opencontainers.image.source="https://github.com/RaayzOne/devops-tp-docker-rayan"
 
-# Copier la configuration Nginx
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+RUN addgroup -g 1000 -S appgroup && \
+    adduser -u 1000 -S appuser -G appgroup
 
-# Copier les fichiers de l'application
-COPY src/ /usr/share/nginx/html/
+RUN apk add --no-cache ca-certificates && rm -rf /var/cache/apk/*
 
-EXPOSE 80
+COPY --chown=appuser:appgroup nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --chown=appuser:appgroup src/ /usr/share/nginx/html/
 
-# Healthcheck
+RUN chown -R appuser:appgroup /usr/share/nginx/html && \
+    chmod -R 755 /usr/share/nginx/html
+
+RUN touch /var/run/nginx.pid && \
+    chown -R appuser:appgroup /var/run/nginx.pid && \
+    chown -R appuser:appgroup /var/cache/nginx
+
+USER appuser
+
+EXPOSE 8080
+
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget -q --spider http://localhost/ || exit 1
+    CMD wget --quiet --tries=1 --spider http://localhost:8080/ || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
