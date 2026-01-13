@@ -84,3 +84,7 @@ Windows bloqués).
 Cependant, l’ensemble du pipeline CI/CD a été validé via GitHub Actions
 et l’image Docker est bien buildée et publiée sur GitHub Container Registry,
 ce qui permet de garantir le bon fonctionnement du projet.
+
+![Build and Scan](https://github.com/RaayzOne/devops-tp-docker-rayan/actions/workflows/docker-deploy.yml/badge.svg)
+![CodeQL](https://github.com/RaayzOne/devops-tp-docker-rayan/actions/workflows/codeql-analysis.yml/badge.svg)
+
