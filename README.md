@@ -79,7 +79,7 @@ build et la publication des images correspondantes sur GHCR.
 
 L’installation de Docker Desktop et de WSL2 n’a pas été possible sur la
 machine locale en raison de restrictions système (droits et composants
-Windows bloqués).
+Windows bloqués). 
 
 Cependant, l’ensemble du pipeline CI/CD a été validé via GitHub Actions
 et l’image Docker est bien buildée et publiée sur GitHub Container Registry,
